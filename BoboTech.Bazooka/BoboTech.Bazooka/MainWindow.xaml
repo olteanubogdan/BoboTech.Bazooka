@@ -1,0 +1,28 @@
+﻿<Window x:Class="BoboTech.Bazooka.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+        xmlns:local="clr-namespace:BoboTech.Bazooka"
+        DataContext="{dxmvvm:ViewModelSource Type=local:MainViewModel}"
+        mc:Ignorable="d"
+        Title="{Binding WindowTitle}" Height="450" Width="800">
+    <dxmvvm:Interaction.Behaviors>
+        <dxmvvm:MessageBoxService/>
+        <dxmvvm:EventToCommand EventName="Loaded" Command="{Binding ViewLoadedCommand}"/>
+    </dxmvvm:Interaction.Behaviors>
+    <StackPanel Margin="0,10,0,0">
+        <StackPanel Orientation="Horizontal">
+            <Button Command="{Binding TestAsyncCommand}" Margin="3">
+                <TextBlock Margin="10,0,10,0" Text="Test"/>
+            </Button>
+        </StackPanel>
+        <GroupBox Header="Star pact" Margin="3">
+            <StackPanel Margin="3">
+                <TextBlock Text="Meteor key"/>
+                <ComboBox ItemsSource="{Binding StarPactMeteorKeyValues}" DisplayMemberPath="Text" SelectedValuePath="Value" SelectedItem="{Binding SelectedStarPactMeteorKey}"/>
+            </StackPanel>
+        </GroupBox>
+    </StackPanel>
+</Window>

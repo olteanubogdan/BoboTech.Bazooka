@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29123.88
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoboTech.Bazooka", "BoboTech.Bazooka\BoboTech.Bazooka.csproj", "{DB4D65CF-7E95-4039-8869-A36C2FD9CB75}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DB4D65CF-7E95-4039-8869-A36C2FD9CB75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB4D65CF-7E95-4039-8869-A36C2FD9CB75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB4D65CF-7E95-4039-8869-A36C2FD9CB75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB4D65CF-7E95-4039-8869-A36C2FD9CB75}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {09DB1278-3D5A-453A-B127-70D0702AC890}
+	EndGlobalSection
+EndGlobal
