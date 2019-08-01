@@ -7,22 +7,51 @@
         xmlns:local="clr-namespace:BoboTech.Bazooka"
         DataContext="{dxmvvm:ViewModelSource Type=local:MainViewModel}"
         mc:Ignorable="d"
-        Title="{Binding WindowTitle}" Height="450" Width="800">
+        Title="{Binding WindowTitle}"
+        Height="450" Width="800"
+        MinHeight="100" MinWidth="200">
     <dxmvvm:Interaction.Behaviors>
         <dxmvvm:MessageBoxService/>
         <dxmvvm:EventToCommand EventName="Loaded" Command="{Binding ViewLoadedCommand}"/>
     </dxmvvm:Interaction.Behaviors>
-    <StackPanel Margin="0,10,0,0">
-        <StackPanel Orientation="Horizontal">
-            <Button Command="{Binding TestAsyncCommand}" Margin="3">
-                <TextBlock Margin="10,0,10,0" Text="Test"/>
-            </Button>
-        </StackPanel>
-        <GroupBox Header="Star pact" Margin="3">
-            <StackPanel Margin="3">
-                <TextBlock Text="Meteor key"/>
-                <ComboBox ItemsSource="{Binding StarPactMeteorKeyValues}" DisplayMemberPath="Text" SelectedValuePath="Value" SelectedItem="{Binding SelectedStarPactMeteorKey}"/>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,10,0,0">
+        <WrapPanel>
+            <StackPanel Margin="3" Width="110">
+                <TextBlock Text="Generator key" ToolTip="Electrocute, Spectral blade"/>
+                <ComboBox ItemsSource="{Binding VirtualKeyCodeList}" DisplayMemberPath="Text" SelectedValuePath="Value" SelectedItem="{Binding GeneratorKey}"/>
             </StackPanel>
-        </GroupBox>
-    </StackPanel>
+            <StackPanel Margin="3" Width="110">
+                <TextBlock Text="Buff key" ToolTip="Ray of forst, Arcane torrent, Disintegrate"/>
+                <ComboBox ItemsSource="{Binding VirtualKeyCodeList}" DisplayMemberPath="Text" SelectedValuePath="Value" SelectedItem="{Binding BuffKey}"/>
+            </StackPanel>
+            <StackPanel Margin="3" Width="110">
+                <TextBlock Text="Meteor key"/>
+                <ComboBox ItemsSource="{Binding VirtualKeyCodeList}" DisplayMemberPath="Text" SelectedValuePath="Value" SelectedItem="{Binding MeteorKey}"/>
+            </StackPanel>
+            <StackPanel Margin="3" Width="110">
+                <TextBlock Text="Archon key" />
+                <ComboBox ItemsSource="{Binding VirtualKeyCodeList}" DisplayMemberPath="Text" SelectedValuePath="Value" SelectedItem="{Binding ArchonKey}"/>
+            </StackPanel>
+            <StackPanel Margin="3" Width="110">
+                <TextBlock Text="Bazooka macro key"/>
+                <ComboBox ItemsSource="{Binding HotKeyList}" DisplayMemberPath="Text" SelectedValuePath="Value" SelectedItem="{Binding BazookaMacroKey}"/>
+            </StackPanel>
+            <StackPanel Margin="3" Width="110">
+                <TextBlock Text="Star pact macro key"/>
+                <ComboBox ItemsSource="{Binding HotKeyList}" DisplayMemberPath="Text" SelectedValuePath="Value" SelectedItem="{Binding StarPactMacroKey}"/>
+            </StackPanel>
+            <Button Margin="3" VerticalAlignment="Bottom" Command="{Binding StartBazookaMacroCommand}">
+                <TextBlock Margin="10,0,10,0" Text="Start macro for bazooka"/>
+            </Button>
+            <Button Margin="3" VerticalAlignment="Bottom" Command="{Binding StopBazookaMacroCommand}">
+                <TextBlock Margin="10,0,10,0" Text="Stop macro for bazooka"/>
+            </Button>
+            <Button Margin="3" VerticalAlignment="Bottom" Command="{Binding StartStarPactMacroCommand}">
+                <TextBlock Margin="10,0,10,0" Text="Start macro for start pact"/>
+            </Button>
+            <Button Margin="3" VerticalAlignment="Bottom" Command="{Binding StopStarPactMacroCommand}">
+                <TextBlock Margin="10,0,10,0" Text="Stop macro for start pact"/>
+            </Button>
+        </WrapPanel>
+    </ScrollViewer>
 </Window>
