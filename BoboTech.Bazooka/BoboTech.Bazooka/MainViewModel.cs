@@ -33,6 +33,10 @@ namespace BoboTech.Bazooka
 
         private VirtualKeyCode _archonKey;
 
+        private int _starPactWaitTime;
+
+        private int _buffWaitTime;
+
         public virtual string WindowTitle { get; set; } = "Diablo 3 bazooka macro manager";
 
         public virtual List<ListItem> VirtualKeyCodeList { get; set; }
@@ -50,6 +54,10 @@ namespace BoboTech.Bazooka
         public virtual ListItem BazookaMacroKey { get; set; }
 
         public virtual ListItem StarPactMacroKey { get; set; }
+
+        public virtual int StarPactWaitTime { get; set; } = 1175;
+
+        public virtual int BuffWaitTime { get; set; } = 200;
 
         public void ViewLoaded()
         {
@@ -73,6 +81,8 @@ namespace BoboTech.Bazooka
             _meteorKey = (VirtualKeyCode)MeteorKey.Value;
             _buffKey = (VirtualKeyCode)BuffKey.Value;
             _archonKey = (VirtualKeyCode)ArchonKey.Value;
+            _starPactWaitTime = StarPactWaitTime;
+            _buffWaitTime = BuffWaitTime;
             _bazookaHotKeyManager.KeyPressed += BazookaHotKeyManagerKeyPressed;
         }
 
@@ -87,11 +97,10 @@ namespace BoboTech.Bazooka
             inputSimulator.Keyboard.KeyPress(_meteorKey);
             inputSimulator.Keyboard.KeyPress(_meteorKey);
             inputSimulator.Keyboard.KeyPress(_meteorKey);
-            Thread.Sleep(1075);
+            Thread.Sleep(_starPactWaitTime);
             inputSimulator.Keyboard.KeyDown(_buffKey);
-            Thread.Sleep(50);
             inputSimulator.Keyboard.KeyPress(_archonKey);
-            Thread.Sleep(300);
+            Thread.Sleep(_buffWaitTime);
             inputSimulator.Keyboard.KeyUp(_buffKey);
         }
 
@@ -113,6 +122,8 @@ namespace BoboTech.Bazooka
             _meteorKey = (VirtualKeyCode)MeteorKey.Value;
             _generatorKey = (VirtualKeyCode)GeneratorKey.Value;
             _buffKey = (VirtualKeyCode)BuffKey.Value;
+            _starPactWaitTime = StarPactWaitTime;
+            _buffWaitTime = BuffWaitTime;
             _starPactHotKeyManager.KeyPressed += StarPactHotKeyManagerKeyPressed;
         }
 
@@ -141,7 +152,7 @@ namespace BoboTech.Bazooka
                     break;
             }
 
-            Thread.Sleep(1075);
+            Thread.Sleep(_starPactWaitTime);
 
             switch (_generatorKey)
             {
@@ -157,7 +168,7 @@ namespace BoboTech.Bazooka
             }
 
             inputSimulator.Keyboard.KeyDown(_buffKey);
-            Thread.Sleep(200);
+            Thread.Sleep(_buffWaitTime);
             inputSimulator.Keyboard.KeyUp(_buffKey);
         }
 
