@@ -45,6 +45,10 @@
                 <TextBox Text="{Binding StarPactWaitTime}"/>
             </StackPanel>
             <StackPanel Margin="3" Width="110">
+                <TextBlock Text="Star channel wait time (ms)"/>
+                <TextBox Text="{Binding StartChannelWaitTime}"/>
+            </StackPanel>
+            <StackPanel Margin="3" Width="110">
                 <TextBlock Text="Buff wait time (ms)"/>
                 <TextBox Text="{Binding BuffWaitTime}"/>
             </StackPanel>

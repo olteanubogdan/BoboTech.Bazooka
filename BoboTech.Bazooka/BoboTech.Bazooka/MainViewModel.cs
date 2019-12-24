@@ -2,11 +2,9 @@
 using GlobalHotKey;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Configuration;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using WindowsInput;
 using WindowsInput.Native;
@@ -15,7 +13,7 @@ namespace BoboTech.Bazooka
 {
     public class MainViewModel : ViewModelBase
     {
-        private IMessageBoxService MessageBoxService => GetService<IMessageBoxService>(); //note to self: DX MVVM services are not available yet in ctor
+        //private IMessageBoxService MessageBoxService => GetService<IMessageBoxService>(); //note to self: DX MVVM services are not available yet in ctor
 
         private HotKeyManager _bazookaHotKeyManager;
 
@@ -34,6 +32,8 @@ namespace BoboTech.Bazooka
         private VirtualKeyCode _archonKey;
 
         private int _starPactWaitTime;
+
+        private int _startChannelWaitTime;
 
         private int _buffWaitTime;
 
@@ -55,21 +55,38 @@ namespace BoboTech.Bazooka
 
         public virtual ListItem StarPactMacroKey { get; set; }
 
-        public virtual int StarPactWaitTime { get; set; } = 1175;
+        public virtual int StarPactWaitTime { get; set; }
 
-        public virtual int BuffWaitTime { get; set; } = 200;
+        public virtual int StartChannelWaitTime { get; set; }
+
+        public virtual int BuffWaitTime { get; set; }
 
         public void ViewLoaded()
         {
             VirtualKeyCodeList = ((VirtualKeyCode[])Enum.GetValues(typeof(VirtualKeyCode))).Select(x => new ListItem { Value = (int)x, Text = x.ToString() }).ToList();
             HotKeyList = ((Key[])Enum.GetValues(typeof(Key))).Select(x => new ListItem { Value = (int)x, Text = x.ToString() }).ToList();
 
-            GeneratorKey = VirtualKeyCodeList.FirstOrDefault(x => x.Value == (int)VirtualKeyCode.LBUTTON);
-            BuffKey = VirtualKeyCodeList.FirstOrDefault(x => x.Value == (int)VirtualKeyCode.VK_2);
-            MeteorKey = VirtualKeyCodeList.FirstOrDefault(x => x.Value == (int)VirtualKeyCode.VK_3);
-            ArchonKey = VirtualKeyCodeList.FirstOrDefault(x => x.Value == (int)VirtualKeyCode.VK_4);
-            BazookaMacroKey = HotKeyList.FirstOrDefault(x => x.Value == (int)Key.F1);
-            StarPactMacroKey = HotKeyList.FirstOrDefault(x => x.Value == (int)Key.F2);
+            VirtualKeyCode virtualKeyCode = (VirtualKeyCode)Enum.Parse(typeof(VirtualKeyCode), ConfigurationManager.AppSettings[nameof(GeneratorKey)]);
+            GeneratorKey = VirtualKeyCodeList.FirstOrDefault(x => x.Value == (int)virtualKeyCode);
+
+            virtualKeyCode = (VirtualKeyCode)Enum.Parse(typeof(VirtualKeyCode), ConfigurationManager.AppSettings[nameof(BuffKey)]);
+            BuffKey = VirtualKeyCodeList.FirstOrDefault(x => x.Value == (int)virtualKeyCode);
+
+            virtualKeyCode = (VirtualKeyCode)Enum.Parse(typeof(VirtualKeyCode), ConfigurationManager.AppSettings[nameof(MeteorKey)]);
+            MeteorKey = VirtualKeyCodeList.FirstOrDefault(x => x.Value == (int)virtualKeyCode);
+
+            virtualKeyCode = (VirtualKeyCode)Enum.Parse(typeof(VirtualKeyCode), ConfigurationManager.AppSettings[nameof(ArchonKey)]);
+            ArchonKey = VirtualKeyCodeList.FirstOrDefault(x => x.Value == (int)virtualKeyCode);
+
+            Key key = (Key)Enum.Parse(typeof(Key), ConfigurationManager.AppSettings[nameof(BazookaMacroKey)]);
+            BazookaMacroKey = HotKeyList.FirstOrDefault(x => x.Value == (int)key);
+
+            key = (Key)Enum.Parse(typeof(Key), ConfigurationManager.AppSettings[nameof(StarPactMacroKey)]);
+            StarPactMacroKey = HotKeyList.FirstOrDefault(x => x.Value == (int)key);
+
+            StarPactWaitTime = int.Parse(ConfigurationManager.AppSettings[nameof(StarPactWaitTime)]);
+            StartChannelWaitTime = int.Parse(ConfigurationManager.AppSettings[nameof(StartChannelWaitTime)]);
+            BuffWaitTime = int.Parse(ConfigurationManager.AppSettings[nameof(BuffWaitTime)]);
         }
 
         public bool CanStartBazookaMacro() => _bazookaHotKeyManager == null;
@@ -82,14 +99,13 @@ namespace BoboTech.Bazooka
             _buffKey = (VirtualKeyCode)BuffKey.Value;
             _archonKey = (VirtualKeyCode)ArchonKey.Value;
             _starPactWaitTime = StarPactWaitTime;
+            _startChannelWaitTime = StartChannelWaitTime;
             _buffWaitTime = BuffWaitTime;
             _bazookaHotKeyManager.KeyPressed += BazookaHotKeyManagerKeyPressed;
         }
 
         private void BazookaHotKeyManagerKeyPressed(object sender, KeyPressedEventArgs e)
         {
-            Debug.WriteLine($"Hot key {e.HotKey.Key} pressed!");
-
             if (e.HotKey.Key != _bazookaHotKey.Key)
                 return;
 
@@ -99,6 +115,7 @@ namespace BoboTech.Bazooka
             inputSimulator.Keyboard.KeyPress(_meteorKey);
             Thread.Sleep(_starPactWaitTime);
             inputSimulator.Keyboard.KeyDown(_buffKey);
+            Thread.Sleep(_startChannelWaitTime);
             inputSimulator.Keyboard.KeyPress(_archonKey);
             Thread.Sleep(_buffWaitTime);
             inputSimulator.Keyboard.KeyUp(_buffKey);
@@ -129,8 +146,6 @@ namespace BoboTech.Bazooka
 
         private void StarPactHotKeyManagerKeyPressed(object sender, KeyPressedEventArgs e)
         {
-            Debug.WriteLine($"Hot key {e.HotKey.Key} pressed!");
-
             if (e.HotKey.Key != _starPactHotKey.Key)
                 return;
 
